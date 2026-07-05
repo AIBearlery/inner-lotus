@@ -17,11 +17,11 @@ export const palette = {
   mist: '#BBDDE6',
   lavender: '#CDBEEB',
   sage: '#C9D8B6',
-  // Dark-mode base (deep indigo/plum)
-  plum: '#241B33',
-  indigo: '#2E2545',
-  duskInk: '#F3ECF5',
-  duskMuted: '#B7A9C6',
+  // Dark-mode base — a warmer, lifted plum (not a dull, flat dark purple)
+  plum: '#2E2743',
+  indigo: '#3C3159',
+  duskInk: '#F5EEF6',
+  duskMuted: '#C2B4D0',
 } as const;
 
 export type ColorScheme = {
@@ -71,15 +71,16 @@ export const dark: ColorScheme = {
 export const gradients: Record<DayWindow, { light: string[]; dark: string[] }> = {
   morning: {
     light: ['#FFF8F1', '#FFE4D2', '#F7D6E5'],
-    dark: ['#241B33', '#3A2740', '#432B3E'],
+    // Warm dawn-in-dark: lifted plum easing into a dusty rose, never flat/dull.
+    dark: ['#2E2743', '#4A3557', '#5E4056'],
   },
   midday: {
     light: ['#FFFBEF', '#FFE9C9', '#FBD7C2'],
-    dark: ['#241B33', '#3E2E3A', '#4A3330'],
+    dark: ['#2E2743', '#4E3A52', '#614642'],
   },
   evening: {
     light: ['#F3E9F5', '#DCC9EB', '#BBAAD9'],
-    dark: ['#1C1530', '#241B39', '#2E2545'],
+    dark: ['#241C3A', '#352B50', '#443660'],
   },
 };
 

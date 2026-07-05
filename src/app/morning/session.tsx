@@ -111,7 +111,7 @@ export default function Session() {
             )}
           </View>
           <View style={{ gap: 10 }}>
-            <PrimaryButton label="Begin — you can close your eyes" onPress={() => setPhase('practice')} />
+            <PrimaryButton label="Begin — close your eyes, I’m with you" onPress={() => setPhase('practice')} />
             {!hasAudio && (
               <Muted style={{ textAlign: 'center' }}>
                 Amelie’s voice for this one is coming soon — for now, follow the orb’s breath.
@@ -131,7 +131,7 @@ export default function Session() {
           <AmelieOrb window="morning" size={120} />
           <Title style={{ textAlign: 'center' }}>That’s the day begun.</Title>
           <AmelieLine style={{ textAlign: 'center' }}>
-            However today unfolds, you gave it a gentle start. I’m proud of you for that.
+            However today unfolds, we began it gently — together. I’m glad to be here with you.
           </AmelieLine>
         </View>
         <PrimaryButton label="Carry on with your day" onPress={() => router.replace('/')} />
@@ -151,7 +151,7 @@ export default function Session() {
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', gap: 28 }}>
         <AmelieOrb window="morning" size={200} />
         <AmelieLine style={{ textAlign: 'center' }}>
-          {hasAudio ? 'Let your eyes close. I’ll do the rest.' : 'In as it grows… out as it softens.'}
+          {hasAudio ? 'Let your eyes close — I’m right here with you.' : 'In as it grows… out as it softens. I’m right here.'}
         </AmelieLine>
       </View>
 

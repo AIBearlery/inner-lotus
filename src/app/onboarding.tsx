@@ -64,8 +64,9 @@ export default function Onboarding() {
             <AmelieOrb window="morning" size={140} />
             <Title style={{ textAlign: 'center' }}>Hello — I’m Amelie.</Title>
             <AmelieLine style={{ textAlign: 'center' }}>
-              I’ll keep you gentle company through the day — a calm start each morning, and a
-              soft place to land at night. No streaks, no pressure. Just a little presence.
+              I’m your companion through the day — a bright little start each morning, and a
+              soft place to land at night. No streaks, no pressure. We’ll just keep each other
+              good company.
             </AmelieLine>
           </View>
           <PrimaryButton label="Nice to meet you" onPress={() => setStep('name')} />
@@ -132,8 +133,8 @@ export default function Onboarding() {
             <AmelieOrb window="morning" size={120} />
             <Title style={{ textAlign: 'center' }}>One last thing.</Title>
             <AmelieLine style={{ textAlign: 'center' }}>
-              May I send you a soft nudge when it’s time? It’s the only way I can gently reach
-              out — never noisy, and always yours to switch off.
+              Can I reach out with a soft nudge when it’s time? It’s how I’ll find you through
+              the day — never noisy, and always yours to switch off.
             </AmelieLine>
             {error && <Muted style={{ textAlign: 'center', color: c.primary }}>{error}</Muted>}
           </View>

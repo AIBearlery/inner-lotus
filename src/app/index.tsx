@@ -39,8 +39,8 @@ export default function Home() {
         </View>
 
         <View style={{ gap: 12 }}>
-          <PrimaryButton label="Begin your morning" onPress={() => router.push('/morning/check-in')} />
-          <Muted style={{ textAlign: 'center' }}>A few gentle minutes, at your pace.</Muted>
+          <PrimaryButton label="Let’s begin the morning" onPress={() => router.push('/morning/check-in')} />
+          <Muted style={{ textAlign: 'center' }}>A few gentle minutes, together, at your pace.</Muted>
         </View>
       </View>
     </Screen>
