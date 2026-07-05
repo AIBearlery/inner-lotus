@@ -19,6 +19,7 @@ export const ROTATION_KEYS = {
   eveningOpener: 'rot:eveningOpener',
   reflectionAck: 'rot:reflectionAck',
   gratitudePrompt: 'rot:gratitudePrompt',
+  closingLine: 'rot:closingLine',
 } as const;
 
 export async function getRecent(rotationKey: string): Promise<string[]> {
