@@ -4,11 +4,9 @@ import { Switch, TextInput, View } from 'react-native';
 
 import { AmelieOrb } from '@/components/amelie/AmelieOrb';
 import { AmelieLine, Muted, PrimaryButton, Screen, SoftCard, Title } from '@/components/il/ui';
-import { MORNING_GREETING_NOTIFICATIONS } from '@/content/persona/morning';
 import { useScheme } from '@/hooks/useScheme';
 import { useApp } from '@/lib/appState';
-import { rescheduleWindowNotifications, requestNotificationPermissions } from '@/lib/notifications';
-import { ROTATION_KEYS } from '@/lib/storage';
+import { rescheduleFromProfile, requestNotificationPermissions } from '@/lib/notifications';
 
 type Step = 'welcome' | 'name' | 'windows' | 'notify';
 
@@ -36,17 +34,14 @@ export default function Onboarding() {
         evening_enabled: windows.evening,
       });
 
-      // Ask for permission, then lay down the morning schedule (midday/evening pools arrive
-      // in later phases; they'll slot into the same call).
+      // Ask for permission, then lay down the schedule for every enabled window.
       const granted = await requestNotificationPermissions();
-      if (granted && windows.morning) {
-        await rescheduleWindowNotifications([
-          {
-            window: 'morning',
-            pool: MORNING_GREETING_NOTIFICATIONS,
-            rotationKey: ROTATION_KEYS.morningGreeting,
-          },
-        ]);
+      if (granted) {
+        await rescheduleFromProfile({
+          morning_enabled: windows.morning,
+          midday_enabled: windows.midday,
+          evening_enabled: windows.evening,
+        });
       }
       router.replace('/');
     } catch {

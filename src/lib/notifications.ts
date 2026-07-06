@@ -6,8 +6,11 @@
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
 
+import { EVENING_GREETING_NOTIFICATIONS } from '@/content/persona/evening';
+import { MIDDAY_BOOSTERS } from '@/content/persona/midday';
+import { MORNING_OPENERS } from '@/content/persona/morning';
 import { pickFresh, recordShown } from '@/engine/rotation';
-import { getRecent, setRecent } from '@/lib/storage';
+import { getRecent, ROTATION_KEYS, setRecent } from '@/lib/storage';
 import type { DayWindow } from '@/types/domain';
 
 /** Daily windows, in minutes from midnight. */
@@ -113,4 +116,23 @@ export async function rescheduleWindowNotifications(
   }
 
   return scheduledCount;
+}
+
+/** Build the schedule for whichever windows the user has enabled, using the locked pools. */
+export async function rescheduleFromProfile(profile: {
+  morning_enabled: boolean;
+  midday_enabled: boolean;
+  evening_enabled: boolean;
+}): Promise<number> {
+  const schedules: WindowSchedule[] = [];
+  if (profile.morning_enabled) {
+    schedules.push({ window: 'morning', pool: MORNING_OPENERS, rotationKey: ROTATION_KEYS.morningGreeting });
+  }
+  if (profile.midday_enabled) {
+    schedules.push({ window: 'midday', pool: MIDDAY_BOOSTERS, rotationKey: ROTATION_KEYS.middayBooster });
+  }
+  if (profile.evening_enabled) {
+    schedules.push({ window: 'evening', pool: EVENING_GREETING_NOTIFICATIONS, rotationKey: ROTATION_KEYS.eveningGreeting });
+  }
+  return rescheduleWindowNotifications(schedules);
 }

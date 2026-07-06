@@ -1,13 +1,12 @@
-// The morning meditation library — a local constant, not a DB table (fixed set, audio
-// ships with the app). Each session shows a short SEED on screen (a zen quote or a
-// mini-story, read with eyes open) and then plays AUDIO guidance so the user can close
-// their eyes and drop in. The set is reworked to LIFT and PREPARE for the day
-// (activation, positive affect, attention, intention) rather than to wind down —
-// body-scan/release deliberately lives in the evening instead.
+// The morning meditation library — a local constant, not a DB table (fixed set, audio ships
+// with the app). Each session shows a short SEED on screen (eyes open) and then plays AUDIO
+// guidance so the user can close their eyes. The set is reworked to LIFT and PREPARE for the
+// day (activation, positive affect, attention, intention), not to wind down — body-scan lives
+// in the evening instead. Seeds are LOCKED v1 (from the meditation scripts working draft).
 //
-// audio.assetId maps to a source resolved in src/lib/audio.ts. Real narration is added
-// per the chosen production method; the id/slot stays stable so a recorded (or
-// family-recorded) track can replace a placeholder with no other change.
+// audio.assetId maps to a source resolved in src/lib/audio.ts. Real narration is added per the
+// chosen production method; the id/slot stays stable so a recorded (or family-recorded) track
+// can replace a placeholder with no other change.
 
 import type { Meditation } from '@/types/domain';
 
@@ -27,9 +26,9 @@ export const MEDITATIONS: Meditation[] = [
     serves: { energies: ['Bright', 'Light'], needs: ['Energy'] },
     seed: {
       kind: 'mini_story',
-      text: 'A tree doesn’t brace for spring. It just lets the sap rise, one warm inch at a time. Let’s wake like that — no force, only rising.',
+      text: 'Morning can begin quietly. A little breath, a little feeling, a little light returning to the body.',
     },
-    audio: { assetId: 'wake-the-body', durationSec: 210 },
+    audio: { assetId: 'wake-the-body', durationSec: 240 },
     lengthMin: 4,
   },
   {
@@ -37,11 +36,10 @@ export const MEDITATIONS: Meditation[] = [
     title: 'Spark',
     serves: { energies: ['Bright'], needs: ['Energy'] },
     seed: {
-      kind: 'zen_quote',
-      text: 'The morning breeze has secrets to tell you. Don’t go back to sleep.',
-      attribution: 'Rumi',
+      kind: 'mini_story',
+      text: 'Energy doesn’t have to burst in. Sometimes it arrives as one clean breath, then another.',
     },
-    audio: { assetId: 'spark', durationSec: 150 },
+    audio: { assetId: 'spark', durationSec: 180 },
     lengthMin: 3,
   },
   {
@@ -49,9 +47,8 @@ export const MEDITATIONS: Meditation[] = [
     title: 'Clear the Lens',
     serves: { energies: ['Focused', 'Grounded', 'Steady'], needs: ['Focus', 'Balance'] },
     seed: {
-      kind: 'zen_quote',
-      text: 'The quieter you become, the more you’re able to hear.',
-      attribution: 'Ram Dass',
+      kind: 'mini_story',
+      text: 'Before the day fills the room, let’s clear one small window for the mind.',
     },
     audio: { assetId: 'clear-the-lens', durationSec: 240 },
     lengthMin: 4,
@@ -62,9 +59,9 @@ export const MEDITATIONS: Meditation[] = [
     serves: { energies: ['Warm', 'Open'], needs: ['Self-compassion', 'Confidence'] },
     seed: {
       kind: 'mini_story',
-      text: 'Somewhere, someone is hoping today is gentle with you. Let’s begin by being that someone — first for yourself, then for one other.',
+      text: 'Warmth can start very small: one kind breath inward, one kind thought outward.',
     },
-    audio: { assetId: 'open-with-warmth', durationSec: 270 },
+    audio: { assetId: 'open-with-warmth', durationSec: 300 },
     lengthMin: 5,
   },
   {
@@ -72,10 +69,10 @@ export const MEDITATIONS: Meditation[] = [
     title: 'Set the Day',
     serves: { energies: ['Open', 'Steady'], needs: ['Confidence', 'Balance', 'Focus'] },
     seed: {
-      kind: 'zen_quote',
-      text: 'The day becomes the shape of the intention you give it. So let’s give it a good one.',
+      kind: 'mini_story',
+      text: 'Today doesn’t need a grand plan. Just a gentle direction to return to.',
     },
-    audio: { assetId: 'set-the-day', durationSec: 210 },
+    audio: { assetId: 'set-the-day', durationSec: 240 },
     lengthMin: 4,
   },
   {
@@ -84,9 +81,9 @@ export const MEDITATIONS: Meditation[] = [
     serves: { energies: ['Calm'], needs: ['Peace', 'Letting go', 'Rest'] },
     seed: {
       kind: 'mini_story',
-      text: 'Even the roughest night is only weather. And weather passes. Let’s let the wind drop, one long slow breath at a time — enough to begin.',
+      text: 'Some mornings arrive unevenly. We can begin softly, one slower breath at a time.',
     },
-    audio: { assetId: 'steady-the-storm', durationSec: 270 },
+    audio: { assetId: 'steady-the-storm', durationSec: 300 },
     lengthMin: 5,
   },
 ];
