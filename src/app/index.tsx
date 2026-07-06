@@ -1,5 +1,5 @@
 import { Redirect, useRouter } from 'expo-router';
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
 import { AmelieOrb } from '@/components/amelie/AmelieOrb';
 import { AmelieLine, Muted, PrimaryButton, Screen, Title } from '@/components/il/ui';
@@ -38,9 +38,20 @@ export default function Home() {
           <AmelieLine style={{ textAlign: 'center' }}>{opener}</AmelieLine>
         </View>
 
-        <View style={{ gap: 12 }}>
+        <View style={{ gap: 14 }}>
           <PrimaryButton label="Let’s begin the morning" onPress={() => router.push('/morning/check-in')} />
           <Muted style={{ textAlign: 'center' }}>A few gentle minutes, together, at your pace.</Muted>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', gap: 26, paddingTop: 4 }}>
+            <Pressable onPress={() => router.push('/midday/lift')}>
+              <Muted style={{ fontWeight: '700' }}>Midday</Muted>
+            </Pressable>
+            <Pressable onPress={() => router.push('/evening')}>
+              <Muted style={{ fontWeight: '700' }}>Evening</Muted>
+            </Pressable>
+            <Pressable onPress={() => router.push('/history')}>
+              <Muted style={{ fontWeight: '700' }}>History</Muted>
+            </Pressable>
+          </View>
         </View>
       </View>
     </Screen>

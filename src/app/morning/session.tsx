@@ -11,6 +11,7 @@ import { useScheme } from '@/hooks/useScheme';
 import { useApp } from '@/lib/appState';
 import { configureAudioModeForPlayback } from '@/lib/audio';
 import { saveMeditationCompletion } from '@/lib/db';
+import type { DayWindow } from '@/types/domain';
 
 type Phase = 'seed' | 'practice' | 'done';
 
@@ -18,7 +19,8 @@ export default function Session() {
   const router = useRouter();
   const c = useScheme();
   const { userId } = useApp();
-  const params = useLocalSearchParams<{ meditationId?: string; checkInId?: string }>();
+  const params = useLocalSearchParams<{ meditationId?: string; checkInId?: string; window?: string }>();
+  const win: DayWindow = params.window === 'evening' ? 'evening' : 'morning';
 
   const meditation = getMeditation(params.meditationId ?? '');
   const source = meditation ? getAudioSource(meditation.audio.assetId) : null;
@@ -91,7 +93,7 @@ export default function Session() {
 
   if (!meditation) {
     return (
-      <Screen window="morning" contentStyle={{ alignItems: 'center', justifyContent: 'center', gap: 16 }}>
+      <Screen window={win} contentStyle={{ alignItems: 'center', justifyContent: 'center', gap: 16 }}>
         <Title>That practice slipped away.</Title>
         <PrimaryButton label="Back to start" onPress={() => router.replace('/')} />
       </Screen>
@@ -101,7 +103,7 @@ export default function Session() {
   // --- Seed: shown with eyes open, before the guidance begins ---
   if (phase === 'seed') {
     return (
-      <Screen window="morning">
+      <Screen window={win}>
         <View style={{ flex: 1, justifyContent: 'space-between', paddingVertical: 16 }}>
           <View style={{ flex: 1, justifyContent: 'center', gap: 22 }}>
             <Muted>{meditation.title} · {meditation.lengthMin} min</Muted>
@@ -125,16 +127,24 @@ export default function Session() {
 
   // --- Done: a soft close ---
   if (phase === 'done') {
+    const isEvening = win === 'evening';
     return (
-      <Screen window="morning" contentStyle={{ justifyContent: 'space-between', paddingVertical: 24 }}>
+      <Screen window={win} contentStyle={{ justifyContent: 'space-between', paddingVertical: 24 }}>
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', gap: 22 }}>
-          <AmelieOrb window="morning" size={120} />
-          <Title style={{ textAlign: 'center' }}>That’s the day begun.</Title>
+          <AmelieOrb window={win} size={120} />
+          <Title style={{ textAlign: 'center' }}>
+            {isEvening ? 'The day is set down now.' : 'That’s the day begun.'}
+          </Title>
           <AmelieLine style={{ textAlign: 'center' }}>
-            However today unfolds, we began it gently — together. I’m glad to be here with you.
+            {isEvening
+              ? 'We let it soften, piece by piece. Nothing more to carry for now.'
+              : 'However today unfolds, we began it gently — together. I’m glad to be here with you.'}
           </AmelieLine>
         </View>
-        <PrimaryButton label="Carry on with your day" onPress={() => router.replace('/')} />
+        <PrimaryButton
+          label={isEvening ? 'Now, a little reflection' : 'Carry on with your day'}
+          onPress={() => router.replace(isEvening ? '/evening/chat' : '/')}
+        />
       </Screen>
     );
   }
@@ -147,11 +157,15 @@ export default function Session() {
     : elapsed / durationSec;
 
   return (
-    <Screen window="morning" contentStyle={{ alignItems: 'center', justifyContent: 'space-between', paddingVertical: 28 }}>
+    <Screen window={win} contentStyle={{ alignItems: 'center', justifyContent: 'space-between', paddingVertical: 28 }}>
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', gap: 28 }}>
-        <AmelieOrb window="morning" size={200} />
+        <AmelieOrb window={win} size={200} />
         <AmelieLine style={{ textAlign: 'center' }}>
-          {hasAudio ? 'Let your eyes close — I’m right here with you.' : 'In as it grows… out as it softens. I’m right here.'}
+          {win === 'evening'
+            ? 'Let your eyes close. We’ll take this slowly.'
+            : hasAudio
+              ? 'Let your eyes close — I’m right here with you.'
+              : 'In as it grows… out as it softens. I’m right here.'}
         </AmelieLine>
       </View>
 

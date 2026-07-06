@@ -6,6 +6,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 
 import { useSession } from '@/lib/auth';
 import { getProfile, upsertProfile, type ProfileUpsert } from '@/lib/db';
+import { rescheduleFromProfile } from '@/lib/notifications';
 import { isOnboardingComplete, setOnboardingComplete } from '@/lib/storage';
 import type { Profile } from '@/types/domain';
 
@@ -29,14 +30,20 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const load = useCallback(async () => {
     const done = await isOnboardingComplete();
     setOnboarded(done);
+    let prof: Profile | null = null;
     if (userId) {
       try {
-        setProfile(await getProfile(userId));
+        prof = await getProfile(userId);
+        setProfile(prof);
       } catch {
         // Profile fetch can fail offline; the local onboarding flag still governs routing.
       }
     }
     setReady(true);
+    // Keep the rolling notification schedule topped up for a returning user.
+    if (done && prof) {
+      rescheduleFromProfile(prof).catch(() => {});
+    }
   }, [userId]);
 
   useEffect(() => {

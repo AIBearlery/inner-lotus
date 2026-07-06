@@ -88,8 +88,25 @@ export const MEDITATIONS: Meditation[] = [
   },
 ];
 
+/**
+ * The optional evening wind-down (body-scan / release) — this is where body-scan lives, kept
+ * out of the mornings. Not part of the morning recommendation set. Audio to be recorded; until
+ * then it plays the gentle guided-breathing placeholder.
+ */
+export const EVENING_WINDDOWN: Meditation = {
+  id: 'evening-wind-down',
+  title: 'Evening Wind-Down',
+  serves: { energies: [], needs: [] },
+  seed: {
+    kind: 'mini_story',
+    text: 'The day can set itself down now. A slow breath, and the body softening, piece by piece.',
+  },
+  audio: { assetId: 'evening-wind-down', durationSec: 300 },
+  lengthMin: 5,
+};
+
 const MEDITATIONS_BY_ID: Record<string, Meditation> = Object.fromEntries(
-  MEDITATIONS.map((m) => [m.id, m]),
+  [...MEDITATIONS, EVENING_WINDDOWN].map((m) => [m.id, m]),
 );
 
 export function getMeditation(id: string): Meditation | undefined {

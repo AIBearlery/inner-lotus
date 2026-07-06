@@ -2,7 +2,15 @@
 // the current anonymous user by Row Level Security, so we never filter by user_id on reads.
 
 import { supabase } from '@/lib/supabase';
-import type { CheckIn, Energy, Profile, Purpose } from '@/types/domain';
+import type {
+  ChatMessage,
+  ChatMessageType,
+  ChatRole,
+  CheckIn,
+  Energy,
+  Profile,
+  Purpose,
+} from '@/types/domain';
 
 /** Local calendar date as YYYY-MM-DD (the app keys a day by the user's local date). */
 export function todayISODate(d: Date = new Date()): string {
@@ -79,4 +87,88 @@ export async function countCheckIns(): Promise<number> {
     .select('*', { count: 'exact', head: true });
   if (error) throw error;
   return count ?? 0;
+}
+
+// --- Evening chat ---
+
+export type ChatSession = {
+  id: string;
+  user_id: string;
+  date: string;
+  kind: string;
+  started_at: string;
+  completed_at: string | null;
+};
+
+export async function getOrCreateChatSession(
+  userId: string,
+  date: string,
+  kind = 'evening',
+): Promise<ChatSession> {
+  const { data, error } = await supabase
+    .from('chat_sessions')
+    .upsert({ user_id: userId, date, kind }, { onConflict: 'user_id,date,kind' })
+    .select()
+    .single();
+  if (error) throw error;
+  return data as ChatSession;
+}
+
+export async function completeChatSession(sessionId: string): Promise<void> {
+  const { error } = await supabase
+    .from('chat_sessions')
+    .update({ completed_at: new Date().toISOString() })
+    .eq('id', sessionId);
+  if (error) throw error;
+}
+
+export async function getChatMessages(sessionId: string): Promise<ChatMessage[]> {
+  const { data, error } = await supabase
+    .from('chat_messages')
+    .select('*')
+    .eq('session_id', sessionId)
+    .order('sort_order', { ascending: true });
+  if (error) throw error;
+  return (data ?? []) as ChatMessage[];
+}
+
+export async function deleteChatMessages(sessionId: string): Promise<void> {
+  const { error } = await supabase.from('chat_messages').delete().eq('session_id', sessionId);
+  if (error) throw error;
+}
+
+export async function saveChatMessage(input: {
+  session_id: string;
+  user_id: string;
+  role: ChatRole;
+  message_type: ChatMessageType;
+  content: string;
+  sort_order: number;
+}): Promise<void> {
+  const { error } = await supabase.from('chat_messages').insert(input);
+  if (error) throw error;
+}
+
+// --- History ---
+
+export async function getRecentCheckIns(limit = 30): Promise<CheckIn[]> {
+  const { data, error } = await supabase
+    .from('check_ins')
+    .select('*')
+    .order('date', { ascending: false })
+    .limit(limit);
+  if (error) throw error;
+  return (data ?? []) as CheckIn[];
+}
+
+/** Gratitude entries are just chat_messages of type gratitude_reply. */
+export async function getGratitudeEntries(limit = 30): Promise<ChatMessage[]> {
+  const { data, error } = await supabase
+    .from('chat_messages')
+    .select('*')
+    .eq('message_type', 'gratitude_reply')
+    .order('created_at', { ascending: false })
+    .limit(limit);
+  if (error) throw error;
+  return (data ?? []) as ChatMessage[];
 }

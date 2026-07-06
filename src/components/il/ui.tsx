@@ -89,26 +89,36 @@ export function PrimaryButton({
   onPress,
   loading,
   disabled,
+  variant = 'solid',
   style,
 }: {
   label: string;
   onPress?: () => void;
   loading?: boolean;
   disabled?: boolean;
+  variant?: 'solid' | 'ghost';
   style?: StyleProp<ViewStyle>;
 }) {
   const c = useScheme();
+  const ghost = variant === 'ghost';
   return (
     <Pressable
       onPress={onPress}
       disabled={disabled || loading}
       accessibilityRole="button"
-      style={[styles.button, { backgroundColor: c.primary, opacity: disabled ? 0.5 : 1 }, style]}
+      style={[
+        styles.button,
+        ghost
+          ? { backgroundColor: 'transparent', borderWidth: 1.5, borderColor: c.primary }
+          : { backgroundColor: c.primary },
+        { opacity: disabled ? 0.5 : 1 },
+        style,
+      ]}
     >
       {loading ? (
-        <ActivityIndicator color={c.onPrimary} />
+        <ActivityIndicator color={ghost ? c.primary : c.onPrimary} />
       ) : (
-        <Text style={[styles.buttonText, { color: c.onPrimary }]}>{label}</Text>
+        <Text style={[styles.buttonText, { color: ghost ? c.primary : c.onPrimary }]}>{label}</Text>
       )}
     </Pressable>
   );

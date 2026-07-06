@@ -19,6 +19,7 @@ export const AUDIO_SOURCES: Record<string, AudioSource> = {
   // 'open-with-warmth': require('../../assets/audio/open-with-warmth.m4a'),
   // 'set-the-day': require('../../assets/audio/set-the-day.m4a'),
   // 'steady-the-storm': require('../../assets/audio/steady-the-storm.m4a'),
+  // 'evening-wind-down': require('../../assets/audio/evening-wind-down.m4a'),
 };
 
 /** Returns the bundled source for an assetId, or null if it hasn't been recorded yet. */
