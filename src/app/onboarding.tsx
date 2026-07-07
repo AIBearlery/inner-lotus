@@ -25,7 +25,12 @@ export default function Onboarding() {
     setSaving(true);
     setError(null);
     try {
-      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone ?? null;
+      let timezone: string | null = null;
+      try {
+        timezone = Intl.DateTimeFormat().resolvedOptions().timeZone ?? null;
+      } catch {
+        timezone = null; // Some JS engines lack full Intl timezone support; not essential.
+      }
       await completeOnboarding({
         display_name: name.trim() || null,
         timezone,
